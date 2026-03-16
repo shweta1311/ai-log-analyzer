@@ -3,6 +3,7 @@ package com.shweta.ai_log_analyzer.controller;
 import com.shweta.ai_log_analyzer.model.LogRequest;
 import com.shweta.ai_log_analyzer.service.LogAnalysisService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /*@RestController
 public class LogController {
@@ -32,5 +33,18 @@ public class LogController {
     public String analyzeLogs(@RequestBody LogRequest request) {
 
         return service.analyzeLogs(request.getLogs());
+    }
+
+    @PostMapping("/upload")
+    public String uploadLogs(@RequestParam("file") MultipartFile file) {
+
+        try {
+            String logs = new String(file.getBytes());
+
+            return service.analyzeLogs(logs);
+
+        } catch (Exception e) {
+            return "Error reading file: " + e.getMessage();
+        }
     }
 }
