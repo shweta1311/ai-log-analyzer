@@ -1,5 +1,6 @@
 package com.shweta.ai_log_analyzer.controller;
 
+import com.shweta.ai_log_analyzer.model.AnalysisResponse;
 import com.shweta.ai_log_analyzer.model.LogRequest;
 import com.shweta.ai_log_analyzer.service.LogAnalysisService;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,11 @@ public class LogController {
         this.service = service;
     }
 
+    @GetMapping("/health")
+    public String health() {
+        return "Service is running";
+    }
+
     @PostMapping("/analyze")
     public String analyzeLogs(@RequestBody LogRequest request) {
 
@@ -36,15 +42,18 @@ public class LogController {
     }
 
     @PostMapping("/upload")
-    public String uploadLogs(@RequestParam("file") MultipartFile file) {
+    public AnalysisResponse uploadLogs(@RequestParam("file") MultipartFile file) {
 
         try {
             String logs = new String(file.getBytes());
 
-            return service.analyzeLogs(logs);
+            return service.analyzeLogs_refined(logs);
 
         } catch (Exception e) {
-            return "Error reading file: " + e.getMessage();
+            AnalysisResponse errorResponse = new AnalysisResponse();
+            errorResponse.setRootCause("File processing error");
+            errorResponse.setSuggestion("Unable to process the uploaded file: " + e.getMessage());
+            return errorResponse;
         }
     }
 }

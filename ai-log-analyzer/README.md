@@ -8,6 +8,7 @@ A Spring Boot application that leverages Google's Gemini AI to analyze applicati
 - Integration with Google Gemini AI for intelligent log parsing
 - Simple JSON-based request/response format
 - Spring Boot framework for easy deployment and scalability
+- Upload log file
 
 ## Prerequisites
 
